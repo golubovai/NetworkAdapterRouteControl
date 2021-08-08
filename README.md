@@ -1,2 +1,2 @@
 # NetworkAdapterRouteControl
-Controls and sync routing parameters of VPN adapter
+Controls and sync routing parameters of network adapter (vpn)
