@@ -1,14 +1,14 @@
-﻿using System;
+﻿using NetworkAdapterRouteControl.WinApi;
+using System;
 using System.Collections;
-using System.Windows.Forms;
 using System.Configuration;
-using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using NetworkAdapterRouteControl.WinApi;
+using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace NetworkAdapterRouteControl
 {
@@ -36,6 +36,16 @@ namespace NetworkAdapterRouteControl
             }
         }
 
+        private bool IsAutorun()
+        {
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+            if (rk.GetValue(Application.ProductName) == null)
+                return false;
+            else
+                return true;
+        }
+
         private void SettingForm_Load(object sender, EventArgs e)
         {
             this.routeDestinationListBox.Items.AddRange(ReadSetting("RouteDestinationList").Split(',') as object[]);
@@ -50,6 +60,8 @@ namespace NetworkAdapterRouteControl
             this.routeMetricNumericUpDown.Value = decimal.Parse(ReadSetting("RouteMetric"), CultureInfo.InvariantCulture.NumberFormat);
             this.interfaceMetricNumericUpDown.Value = decimal.Parse(ReadSetting("InterfaceMetric"), CultureInfo.InvariantCulture.NumberFormat);
             this.syncPeriodNumericUpDown.Value = decimal.Parse(ReadSetting("SyncPeriod"), CultureInfo.InvariantCulture.NumberFormat);
+            this.autorunCheckBox.Checked = IsAutorun();
+            
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -70,6 +82,15 @@ namespace NetworkAdapterRouteControl
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
             (this.Owner as MainForm)?.SyncSettings();
+            var isAutorun = IsAutorun();
+            if (this.autorunCheckBox.Checked && !isAutorun)
+            {
+                var rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                rk.SetValue(Application.ProductName, Application.ExecutablePath.ToString(), RegistryValueKind.String);
+            } else if (!this.autorunCheckBox.Checked && isAutorun) {
+                var rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                rk.DeleteValue(Application.ProductName, false);
+            }
             this.Close();
         }
 

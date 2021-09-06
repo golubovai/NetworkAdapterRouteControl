@@ -49,6 +49,7 @@ namespace NetworkAdapterRouteControl
             this.exitButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.routeDestinationToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.autorunCheckBox = new System.Windows.Forms.CheckBox();
             this.routeDestinationGroupBox.SuspendLayout();
             this.adapterGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.interfaceMetricNumericUpDown)).BeginInit();
@@ -247,7 +248,7 @@ namespace NetworkAdapterRouteControl
             // 
             // exitButton
             // 
-            this.exitButton.Location = new System.Drawing.Point(267, 244);
+            this.exitButton.Location = new System.Drawing.Point(266, 255);
             this.exitButton.Margin = new System.Windows.Forms.Padding(5);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(75, 25);
@@ -258,7 +259,7 @@ namespace NetworkAdapterRouteControl
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(185, 244);
+            this.saveButton.Location = new System.Drawing.Point(185, 255);
             this.saveButton.Margin = new System.Windows.Forms.Padding(5, 5, 15, 5);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 25);
@@ -267,11 +268,22 @@ namespace NetworkAdapterRouteControl
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
+            // autorunCheckBox
+            // 
+            this.autorunCheckBox.AutoSize = true;
+            this.autorunCheckBox.Location = new System.Drawing.Point(7, 233);
+            this.autorunCheckBox.Name = "autorunCheckBox";
+            this.autorunCheckBox.Size = new System.Drawing.Size(96, 17);
+            this.autorunCheckBox.TabIndex = 11;
+            this.autorunCheckBox.Text = "Автозагрузка";
+            this.autorunCheckBox.UseVisualStyleBackColor = true;
+            // 
             // SettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(354, 281);
+            this.ClientSize = new System.Drawing.Size(354, 291);
+            this.Controls.Add(this.autorunCheckBox);
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.syncPeriodGroupBox);
@@ -280,9 +292,9 @@ namespace NetworkAdapterRouteControl
             this.Controls.Add(this.routeDestinationGroupBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(370, 320);
+            this.MaximumSize = new System.Drawing.Size(370, 330);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(370, 320);
+            this.MinimumSize = new System.Drawing.Size(370, 330);
             this.Name = "SettingForm";
             this.Padding = new System.Windows.Forms.Padding(7);
             this.ShowInTaskbar = false;
@@ -302,6 +314,7 @@ namespace NetworkAdapterRouteControl
             this.metricGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.routeMetricNumericUpDown)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -324,5 +337,6 @@ namespace NetworkAdapterRouteControl
         private System.Windows.Forms.Label msLabel;
         private System.Windows.Forms.TextBox routeDestinationTextBox;
         private System.Windows.Forms.ToolTip routeDestinationToolTip;
+        private System.Windows.Forms.CheckBox autorunCheckBox;
     }
 }

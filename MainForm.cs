@@ -25,6 +25,7 @@ namespace NetworkAdapterRouteControl
         private int _routeMetric;
         private IPAddress[] _routeDestinationList;
         private int _syncPeriod;
+        private Exception _lastException;
 
 
         private static string ReadSetting(string key)
@@ -110,7 +111,7 @@ namespace NetworkAdapterRouteControl
             catch (Exception e)
             {
                 notifyIcon.Visible = true;
-                notifyIcon.ShowBalloonTip(500, "Ошибка параметров", e.Message, ToolTipIcon.Error);
+                notifyIcon.ShowBalloonTip(500, "Ошибка в параметрах", e.Message, ToolTipIcon.Error);
                 return false;
             }
         }
@@ -143,6 +144,7 @@ namespace NetworkAdapterRouteControl
                 {
                     IPAddress.Parse("0.0.0.0")
                 };
+
                 foreach (var routeDestination in sender._routeDestinationList)
                 {
                     destinationHashSet.Add(routeDestination);
@@ -185,8 +187,9 @@ namespace NetworkAdapterRouteControl
             }
             catch (Exception e)
             {
-                log.Error(e.ToString());
-                sender.StopSync(e.Message);
+
+                log.Error(e.Message, e);
+                sender.PauseSync(1000, e);
             }
         }
 
@@ -203,21 +206,28 @@ namespace NetworkAdapterRouteControl
             this.Visible = false;
         }
 
-        private void StopSync(string message)
+        private void ShowNotify(string tipTitle, string tipText, int tipTimeout, ToolTipIcon tipIcon)
         {
-            _timer.Change(Timeout.Infinite, Timeout.Infinite);
             if (InvokeRequired)
             {
                 this.BeginInvoke((MethodInvoker)(() => this.notifyIcon.Visible = true));
-                this.BeginInvoke((MethodInvoker)(() => this.notifyIcon.ShowBalloonTip(500, "Мониторинг параметров выключен", message, ToolTipIcon.Info)));
-                this.BeginInvoke((MethodInvoker)(() => this.controlToolStripMenuItem.Checked = false));
+                this.BeginInvoke((MethodInvoker)(() => this.notifyIcon.ShowBalloonTip(tipTimeout, tipTitle, tipText, tipIcon)));
             }
             else
             {
                 notifyIcon.Visible = true;
-                this.notifyIcon.ShowBalloonTip(500, "Остановлен", message, ToolTipIcon.Info);
-                this.controlToolStripMenuItem.Checked = false;
+                this.notifyIcon.ShowBalloonTip(500, tipTitle, tipText, ToolTipIcon.Info);
             }
+        }
+
+        private void StopSync(string message)
+        {
+            _timer.Change(Timeout.Infinite, Timeout.Infinite);
+            ShowNotify("Остановлен", message, 500, ToolTipIcon.Info);
+            if (InvokeRequired)
+                this.BeginInvoke((MethodInvoker)(() => this.controlToolStripMenuItem.Checked = false));
+            else
+                this.controlToolStripMenuItem.Checked = false;
         }
 
         private void StartSync()
@@ -227,6 +237,18 @@ namespace NetworkAdapterRouteControl
             notifyIcon.Visible = true;
             notifyIcon.ShowBalloonTip(500, "Запущен", " ", ToolTipIcon.Info);
             this.controlToolStripMenuItem.Checked = true;
+        }
+
+        private void PauseSync(int dueTime, Exception ex)
+        {
+            _timer.Change(dueTime, _syncPeriod);
+            if (_lastException == null || 
+                String.Compare(ex.Message, _lastException.Message) != 0 || 
+                String.Compare(ex.StackTrace, _lastException.StackTrace) != 0)
+            {
+                _lastException = ex;
+                ShowNotify("Ошибка", ex.Message, 500, ToolTipIcon.Error);
+            }
         }
 
         public void SyncSettings()
