@@ -50,6 +50,7 @@ namespace NetworkAdapterRouteControl
             this.saveButton = new System.Windows.Forms.Button();
             this.routeDestinationToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.autorunCheckBox = new System.Windows.Forms.CheckBox();
+            this.infoTooolTip = new System.Windows.Forms.ToolTip(this.components);
             this.routeDestinationGroupBox.SuspendLayout();
             this.adapterGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.interfaceMetricNumericUpDown)).BeginInit();
@@ -65,30 +66,32 @@ namespace NetworkAdapterRouteControl
             this.routeDestinationListBox.FormattingEnabled = true;
             this.routeDestinationListBox.Location = new System.Drawing.Point(8, 19);
             this.routeDestinationListBox.Name = "routeDestinationListBox";
-            this.routeDestinationListBox.Size = new System.Drawing.Size(157, 108);
+            this.routeDestinationListBox.Size = new System.Drawing.Size(165, 108);
             this.routeDestinationListBox.TabIndex = 1;
+            this.infoTooolTip.SetToolTip(this.routeDestinationListBox, "Список IP-адресов назначения \r\nмаршрутов адаптера");
             this.routeDestinationListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.routeDestinationListBox_KeyDown);
             // 
             // routeDestinationGroupBox
             // 
-            this.routeDestinationGroupBox.Controls.Add(this.routeDestinationTextBox);
             this.routeDestinationGroupBox.Controls.Add(this.addRouteDestinationButton);
+            this.routeDestinationGroupBox.Controls.Add(this.routeDestinationTextBox);
             this.routeDestinationGroupBox.Controls.Add(this.routeDestinationListBox);
             this.routeDestinationGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.routeDestinationGroupBox.Location = new System.Drawing.Point(7, 7);
             this.routeDestinationGroupBox.Name = "routeDestinationGroupBox";
-            this.routeDestinationGroupBox.Size = new System.Drawing.Size(172, 166);
-            this.routeDestinationGroupBox.TabIndex = 3;
+            this.routeDestinationGroupBox.Size = new System.Drawing.Size(181, 166);
+            this.routeDestinationGroupBox.TabIndex = 1;
             this.routeDestinationGroupBox.TabStop = false;
-            this.routeDestinationGroupBox.Text = "Список адресов назначения";
+            this.routeDestinationGroupBox.Text = "Список IP-адресов назначения";
             // 
             // routeDestinationTextBox
             // 
             this.routeDestinationTextBox.Location = new System.Drawing.Point(8, 135);
             this.routeDestinationTextBox.MaxLength = 15;
             this.routeDestinationTextBox.Name = "routeDestinationTextBox";
-            this.routeDestinationTextBox.Size = new System.Drawing.Size(130, 20);
+            this.routeDestinationTextBox.Size = new System.Drawing.Size(165, 20);
             this.routeDestinationTextBox.TabIndex = 2;
+            this.infoTooolTip.SetToolTip(this.routeDestinationTextBox, "IP-адрес назначения в формате ___.___.___.___");
             this.routeDestinationTextBox.TextChanged += new System.EventHandler(this.routeDestinationTextBox_TextChanged);
             this.routeDestinationTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.routeDestinationTextBox_KeyDown);
             // 
@@ -96,15 +99,17 @@ namespace NetworkAdapterRouteControl
             // 
             this.addRouteDestinationButton.BackColor = System.Drawing.Color.Transparent;
             this.addRouteDestinationButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("addRouteDestinationButton.BackgroundImage")));
-            this.addRouteDestinationButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.addRouteDestinationButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.addRouteDestinationButton.FlatAppearance.BorderSize = 0;
+            this.addRouteDestinationButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
+            this.addRouteDestinationButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.addRouteDestinationButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addRouteDestinationButton.Location = new System.Drawing.Point(141, 133);
+            this.addRouteDestinationButton.Location = new System.Drawing.Point(153, 135);
             this.addRouteDestinationButton.Margin = new System.Windows.Forms.Padding(0);
             this.addRouteDestinationButton.Name = "addRouteDestinationButton";
-            this.addRouteDestinationButton.Size = new System.Drawing.Size(24, 24);
+            this.addRouteDestinationButton.Size = new System.Drawing.Size(20, 20);
             this.addRouteDestinationButton.TabIndex = 3;
-            this.addRouteDestinationButton.UseVisualStyleBackColor = false;
+            this.infoTooolTip.SetToolTip(this.addRouteDestinationButton, "Добавить IP-адрес назначения");
             this.addRouteDestinationButton.Click += new System.EventHandler(this.addRouteDestinationButton_Click);
             // 
             // adapterGroupBox
@@ -117,15 +122,19 @@ namespace NetworkAdapterRouteControl
             this.adapterGroupBox.TabIndex = 4;
             this.adapterGroupBox.TabStop = false;
             this.adapterGroupBox.Text = "Сетевой адаптер";
+            this.infoTooolTip.SetToolTip(this.adapterGroupBox, "Используемый сетевой адаптер");
             // 
             // adapterComboBox
             // 
             this.adapterComboBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.adapterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.adapterComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.adapterComboBox.FormattingEnabled = true;
             this.adapterComboBox.Location = new System.Drawing.Point(8, 19);
             this.adapterComboBox.Name = "adapterComboBox";
             this.adapterComboBox.Size = new System.Drawing.Size(318, 21);
             this.adapterComboBox.TabIndex = 7;
+            this.infoTooolTip.SetToolTip(this.adapterComboBox, "Используемый сетевой адаптер");
             // 
             // interfaceMetricNumericUpDown
             // 
@@ -143,6 +152,7 @@ namespace NetworkAdapterRouteControl
             this.interfaceMetricNumericUpDown.Name = "interfaceMetricNumericUpDown";
             this.interfaceMetricNumericUpDown.Size = new System.Drawing.Size(56, 20);
             this.interfaceMetricNumericUpDown.TabIndex = 5;
+            this.infoTooolTip.SetToolTip(this.interfaceMetricNumericUpDown, "Метрика адаптера 1..9999");
             this.interfaceMetricNumericUpDown.Value = new decimal(new int[] {
             1,
             0,
@@ -153,10 +163,10 @@ namespace NetworkAdapterRouteControl
             // 
             this.syncPeriodGroupBox.Controls.Add(this.msLabel);
             this.syncPeriodGroupBox.Controls.Add(this.syncPeriodNumericUpDown);
-            this.syncPeriodGroupBox.Location = new System.Drawing.Point(185, 10);
+            this.syncPeriodGroupBox.Location = new System.Drawing.Point(194, 10);
             this.syncPeriodGroupBox.Name = "syncPeriodGroupBox";
             this.syncPeriodGroupBox.Padding = new System.Windows.Forms.Padding(8);
-            this.syncPeriodGroupBox.Size = new System.Drawing.Size(156, 77);
+            this.syncPeriodGroupBox.Size = new System.Drawing.Size(147, 51);
             this.syncPeriodGroupBox.TabIndex = 6;
             this.syncPeriodGroupBox.TabStop = false;
             this.syncPeriodGroupBox.Text = "Период синхронизации";
@@ -186,6 +196,7 @@ namespace NetworkAdapterRouteControl
             this.syncPeriodNumericUpDown.Name = "syncPeriodNumericUpDown";
             this.syncPeriodNumericUpDown.Size = new System.Drawing.Size(56, 20);
             this.syncPeriodNumericUpDown.TabIndex = 4;
+            this.infoTooolTip.SetToolTip(this.syncPeriodNumericUpDown, "Период синхронизации маршрутов адаптера");
             this.syncPeriodNumericUpDown.Value = new decimal(new int[] {
             50,
             0,
@@ -198,10 +209,10 @@ namespace NetworkAdapterRouteControl
             this.metricGroupBox.Controls.Add(this.routeMetricLabel);
             this.metricGroupBox.Controls.Add(this.interfaceMetricNumericUpDown);
             this.metricGroupBox.Controls.Add(this.routeMetricNumericUpDown);
-            this.metricGroupBox.Location = new System.Drawing.Point(185, 93);
+            this.metricGroupBox.Location = new System.Drawing.Point(194, 67);
             this.metricGroupBox.Name = "metricGroupBox";
             this.metricGroupBox.Padding = new System.Windows.Forms.Padding(8);
-            this.metricGroupBox.Size = new System.Drawing.Size(156, 80);
+            this.metricGroupBox.Size = new System.Drawing.Size(147, 80);
             this.metricGroupBox.TabIndex = 10;
             this.metricGroupBox.TabStop = false;
             this.metricGroupBox.Text = "Метрика";
@@ -220,9 +231,9 @@ namespace NetworkAdapterRouteControl
             this.routeMetricLabel.AutoSize = true;
             this.routeMetricLabel.Location = new System.Drawing.Point(17, 51);
             this.routeMetricLabel.Name = "routeMetricLabel";
-            this.routeMetricLabel.Size = new System.Drawing.Size(58, 13);
+            this.routeMetricLabel.Size = new System.Drawing.Size(64, 13);
             this.routeMetricLabel.TabIndex = 11;
-            this.routeMetricLabel.Text = "Маршрута";
+            this.routeMetricLabel.Text = "Маршрутов";
             // 
             // routeMetricNumericUpDown
             // 
@@ -240,6 +251,7 @@ namespace NetworkAdapterRouteControl
             this.routeMetricNumericUpDown.Name = "routeMetricNumericUpDown";
             this.routeMetricNumericUpDown.Size = new System.Drawing.Size(56, 20);
             this.routeMetricNumericUpDown.TabIndex = 6;
+            this.infoTooolTip.SetToolTip(this.routeMetricNumericUpDown, "Метрика маршрутов по умолчанию 1..9999");
             this.routeMetricNumericUpDown.Value = new decimal(new int[] {
             1,
             0,
@@ -252,7 +264,7 @@ namespace NetworkAdapterRouteControl
             this.exitButton.Margin = new System.Windows.Forms.Padding(5);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(75, 25);
-            this.exitButton.TabIndex = 9;
+            this.exitButton.TabIndex = 10;
             this.exitButton.Text = "Отмена";
             this.exitButton.UseVisualStyleBackColor = true;
             this.exitButton.Click += new System.EventHandler(this.cancelButton_Click);
@@ -263,7 +275,7 @@ namespace NetworkAdapterRouteControl
             this.saveButton.Margin = new System.Windows.Forms.Padding(5, 5, 15, 5);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 25);
-            this.saveButton.TabIndex = 8;
+            this.saveButton.TabIndex = 9;
             this.saveButton.Text = "Сохранить";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
@@ -271,11 +283,12 @@ namespace NetworkAdapterRouteControl
             // autorunCheckBox
             // 
             this.autorunCheckBox.AutoSize = true;
-            this.autorunCheckBox.Location = new System.Drawing.Point(7, 233);
+            this.autorunCheckBox.Location = new System.Drawing.Point(15, 233);
             this.autorunCheckBox.Name = "autorunCheckBox";
-            this.autorunCheckBox.Size = new System.Drawing.Size(96, 17);
-            this.autorunCheckBox.TabIndex = 11;
-            this.autorunCheckBox.Text = "Автозагрузка";
+            this.autorunCheckBox.Size = new System.Drawing.Size(159, 17);
+            this.autorunCheckBox.TabIndex = 8;
+            this.autorunCheckBox.Text = "Автоматическая загрузка";
+            this.infoTooolTip.SetToolTip(this.autorunCheckBox, "Загружать приложение вместе с системой");
             this.autorunCheckBox.UseVisualStyleBackColor = true;
             // 
             // SettingForm
@@ -338,5 +351,6 @@ namespace NetworkAdapterRouteControl
         private System.Windows.Forms.TextBox routeDestinationTextBox;
         private System.Windows.Forms.ToolTip routeDestinationToolTip;
         private System.Windows.Forms.CheckBox autorunCheckBox;
+        private System.Windows.Forms.ToolTip infoTooolTip;
     }
 }

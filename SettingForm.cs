@@ -98,7 +98,7 @@ namespace NetworkAdapterRouteControl
         {
             if (!routDestinationRegex.IsMatch(routeDestinationTextBox.Text) || !IPAddress.TryParse(this.routeDestinationTextBox.Text, out var routeDestination))
             {
-                routeDestinationToolTip.Show("Неверный формат адреса", this.routeDestinationTextBox, new Point(10, -25), 1000);
+                routeDestinationToolTip.Show("Неверный формат IP-адреса", this.routeDestinationTextBox, new Point(10, -25), 1000);
                 return;
             }
             this.routeDestinationListBox.Items.Add(routeDestination.ToString());
@@ -205,7 +205,8 @@ namespace NetworkAdapterRouteControl
             this.routeDestinationTextBox.Text = preRouteDestinationValue;
             this.routeDestinationTextBox.SelectionStart = Math.Min(selectionStart, this.routeDestinationTextBox.Text.Length);
             this.routeDestinationTextBox.SelectionLength = 0;
-            routeDestinationToolTip.Show("Ошибка ввода", this.routeDestinationTextBox, new Point(10, -25), 1000);
+            routeDestinationToolTip.Show("Неверный формат IP-адреса", this.routeDestinationTextBox, new Point(10, -25), 1000);
         }
+
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Configuration;
 using System.Threading;
 using System.Globalization;
+using System.Runtime.Caching;
 using NetworkAdapterRouteControl.WinApi;
 using log4net;
 
@@ -20,6 +21,8 @@ namespace NetworkAdapterRouteControl
 
         private readonly System.Threading.Timer _timer;
 
+        private static readonly MemoryCache _cache = new MemoryCache("SyncCache");
+        private static DateTimeOffset _vpnAdapterEmptyThrowTime = DateTimeOffset.MaxValue;
         private string _adapterDescription;
         private int _interfaceMetric;
         private int _routeMetric;
@@ -121,22 +124,33 @@ namespace NetworkAdapterRouteControl
             var sender = (MainForm) o;
             try
             {
-                var vpnAdapter = IpHelper.GetAdaptersInfo().Find(i => i.Description.Equals(sender._adapterDescription));
+                var vpnAdapter = (AdapterInfo) _cache.Get("vpnAdapter");
                 if (vpnAdapter == null)
                 {
-                    throw new Exception(String.Format("Не найден сетевой адаптер {0}", sender._adapterDescription));
+                    vpnAdapter = IpHelper.GetAdaptersInfo().Find(i => i.Description.Equals(sender._adapterDescription));
+                    if (vpnAdapter == null)
+                    {
+                        if (_vpnAdapterEmptyThrowTime == DateTimeOffset.MaxValue)
+                            _vpnAdapterEmptyThrowTime = DateTimeOffset.Now.AddSeconds(5);
+                        else if (DateTimeOffset.Now > _vpnAdapterEmptyThrowTime)   
+                            throw new Exception(String.Format("Не найден сетевой адаптер {0}", sender._adapterDescription));
+                    }
+                    else
+                    {
+                        _cache.Add("vpnAdapter", vpnAdapter, DateTimeOffset.Now.AddMilliseconds(2000));
+                        _vpnAdapterEmptyThrowTime = DateTimeOffset.MaxValue;
+                    }
                 }
-
+               
                 var routeTable = IpHelper.GetRouteTable(false);
+
                 if (vpnAdapter.PrimaryGateway == null)
                 {
-                    vpnAdapter.PrimaryGateway = routeTable.Where(i => i.InterfaceIndex == vpnAdapter.Index)
-                        ?.FirstOrDefault()?.GatewayIP;
+                    vpnAdapter.PrimaryGateway = routeTable.Where(i => i.InterfaceIndex == vpnAdapter.Index)?.FirstOrDefault()?.GatewayIP;
                     if (vpnAdapter.PrimaryGateway == null && vpnAdapter.DhcpServer != null)
                     {
                         vpnAdapter.PrimaryGateway = vpnAdapter.DhcpServer;
                     }
-
                     if (vpnAdapter.PrimaryGateway == null) return;
                 }
 
@@ -232,7 +246,11 @@ namespace NetworkAdapterRouteControl
 
         private void StartSync()
         {
-            if (!ReadSettings()) return;
+            if (!ReadSettings())
+            {
+                this.controlToolStripMenuItem.Checked = false;
+                return;
+            }
             _timer.Change(0, _syncPeriod);
             notifyIcon.Visible = true;
             notifyIcon.ShowBalloonTip(500, "Запущен", " ", ToolTipIcon.Info);

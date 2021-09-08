@@ -117,21 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="infoTooolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>201, 17</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="addRouteDestinationButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAeRJREFUSEvl
-        VLtOQlEQvKiFFkYjVr56C1oLG0nsLOgoCOGd0PsHhMZY2GBLQ0JirxUJ0JBQEcOnGG1URJy5zIED3AtI
-        qZNsuDs7u3see3D+BzKZzHkqlaokk8kuDd/VRCJxgVBgqFgRKFSGDRbYA6S/axSLxfaR2LOK1LiLdDq9
-        m8/nd7CLM3BPVrwfj8ePlD4fSA5aic1CobCmkBcC0Dwa/VJNIHRXjkZFUQsB/bWa9OH6HxeKliRsiZpA
-        NBpd5zHJnQByzE54J96QYMBCokYIh8MbiL3DvnO53J5oGzwuN5/fQ8oCVhaSoC1qBBX/MAVoXk3Auxev
-        EZ4EGtwxiN8rUS6mivdhb/qeaaLpYqwqagwEGwxms9kDUab4p5L6OLot0DyKV3EDjvRQ7TgcYXKo1RU1
-        BgJ1BQ/p+xQ38GzCAaDv1+BWCRH6eFjH8r+mihuwyYs0lyT0l0K/4ips4GJOFeyIIneCVW3K9ULAvlDk
-        1liDjURNQg0GPB5RS4Mv3uSLmgXO7kaiZ1FLAzlN5ZZFeQMCPiYK70UtBBZWVE5PlD8wptsSuzuZd1x8
-        8dC0jN4e2blQE7MTWgcW4QjznfAxwm9b8R5iQaUvD+tOfA2akuSrQyPMd1JHwQb/VmAhhf80HOcH261d
-        OJ2YBTMAAAAASUVORK5CYII=
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAAASAAAAEgAd/4VrMAAAAZdEVYdFNvZnR3YXJlAHd3dy5pbmtzY2FwZS5vcmeb7jwa
+        AAAA50lEQVRIS+2WsQ2DMBREoaRORccYKdiBlgEYIiWDZIEMQM8emSFSlAWcu8gffVmfxJbsKEVOehL4
+        37+TaEwFDeAKXGaYyewi4QKzt5c7WDPBLMndHlbnXJUDZqncHyqADsSaaZgFJDep4EKsmYZZQHLjCqBR
+        eUfLI0BpBVALbt5H+NxaXgIlFyzKJyyWl0DxBdCkPCHTzk5cAdSBh59bcNYZe58LoJpnfvYOeupgN6qg
+        AUfPGYhP4JnMm2A37hMJ0Kx8wmx5CfQveJG1oAengN7yEiitIBVmqdzvFRS7Motf+gV/W6rhCYij3QT1
+        +XRlAAAAAElFTkSuQmCC
 </value>
   </data>
+  <metadata name="infoTooolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>201, 17</value>
+  </metadata>
   <metadata name="routeDestinationToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
