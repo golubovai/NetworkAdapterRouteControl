@@ -9,6 +9,7 @@ using System.Threading;
 using System.Globalization;
 using System.Runtime.Caching;
 using NetworkAdapterRouteControl.WinApi;
+using Microsoft.Win32;
 using log4net;
 
 
@@ -29,6 +30,7 @@ namespace NetworkAdapterRouteControl
         private IPAddress[] _routeDestinationList;
         private int _syncPeriod;
         private Exception _lastException;
+        private static DateTimeOffset _lastExceptionTime = DateTimeOffset.MaxValue; 
 
 
         private static string ReadSetting(string key)
@@ -131,9 +133,14 @@ namespace NetworkAdapterRouteControl
                     if (vpnAdapter == null)
                     {
                         if (_vpnAdapterEmptyThrowTime == DateTimeOffset.MaxValue)
-                            _vpnAdapterEmptyThrowTime = DateTimeOffset.Now.AddSeconds(5);
-                        else if (DateTimeOffset.Now > _vpnAdapterEmptyThrowTime)   
+                        {
+                            _vpnAdapterEmptyThrowTime = DateTimeOffset.Now.AddSeconds(10);
+                        }
+                        else if (DateTimeOffset.Now > _vpnAdapterEmptyThrowTime)
+                        {
                             throw new Exception(String.Format("Не найден сетевой адаптер {0}", sender._adapterDescription));
+                        }
+                        return;
                     }
                     else
                     {
@@ -201,8 +208,7 @@ namespace NetworkAdapterRouteControl
             }
             catch (Exception e)
             {
-
-                log.Error(e.Message, e);
+                log.Error(e.ToString());
                 sender.PauseSync(1000, e);
             }
         }
@@ -236,6 +242,7 @@ namespace NetworkAdapterRouteControl
 
         private void StopSync(string message)
         {
+            SystemEvents.PowerModeChanged -= OnPowerChange;
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
             ShowNotify("Остановлен", message, 500, ToolTipIcon.Info);
             if (InvokeRequired)
@@ -252,9 +259,25 @@ namespace NetworkAdapterRouteControl
                 return;
             }
             _timer.Change(0, _syncPeriod);
+            SystemEvents.PowerModeChanged += OnPowerChange;
             notifyIcon.Visible = true;
             notifyIcon.ShowBalloonTip(500, "Запущен", " ", ToolTipIcon.Info);
             this.controlToolStripMenuItem.Checked = true;
+        }
+
+        private void OnPowerChange(object sender, PowerModeChangedEventArgs e)
+        {
+            switch (e.Mode)
+            {
+                case PowerModes.Resume:
+                    log.Debug("Resume");
+                    _timer.Change(0, _syncPeriod);
+                    break;
+                case PowerModes.Suspend:
+                    log.Debug("Suspend");
+                    _timer.Change(Timeout.Infinite, Timeout.Infinite);
+                    break;
+            }
         }
 
         private void PauseSync(int dueTime, Exception ex)
@@ -262,9 +285,11 @@ namespace NetworkAdapterRouteControl
             _timer.Change(dueTime, _syncPeriod);
             if (_lastException == null || 
                 String.Compare(ex.Message, _lastException.Message) != 0 || 
-                String.Compare(ex.StackTrace, _lastException.StackTrace) != 0)
+                String.Compare(ex.StackTrace, _lastException.StackTrace) != 0 ||
+                DateTime.Now > _lastExceptionTime.AddSeconds(60))
             {
                 _lastException = ex;
+                _lastExceptionTime = DateTime.Now;
                 ShowNotify("Ошибка", ex.Message, 500, ToolTipIcon.Error);
             }
         }

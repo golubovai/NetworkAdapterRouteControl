@@ -132,7 +132,11 @@ namespace NetworkAdapterRouteControl.WinApi
                 rowPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NativeMethods.MIB_IPFORWARDROW)));
                 Marshal.StructureToPtr(route, rowPtr, false);
                 var result = NativeMethods.CreateIpForwardEntry(rowPtr);
-                if (result != ApiError.ERROR_SUCCESS)
+                if (result == ApiError.ERROR_OBJECT_ALREADY_EXISTS)
+                {
+                    SetRoute(routeEntry);
+                }
+                else if (result != ApiError.ERROR_SUCCESS)
                 {
                     throw new Win32Exception(result);
                 }
@@ -163,7 +167,14 @@ namespace NetworkAdapterRouteControl.WinApi
                 rowPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NativeMethods.MIB_IPFORWARDROW)));
                 Marshal.StructureToPtr(route, rowPtr, false);
                 var result = NativeMethods.SetIpForwardEntry(rowPtr);
-                if (result != ApiError.ERROR_SUCCESS && result != ApiError.ERROR_FILE_NOT_FOUND && result != ApiError.ERROR_NOT_FOUND) throw new Win32Exception(result);
+                if (result == ApiError.ERROR_NOT_FOUND)
+                {
+                    CreateRoute(routeEntry);
+                }
+                else if (result != ApiError.ERROR_SUCCESS && result != ApiError.ERROR_FILE_NOT_FOUND)
+                {
+                    throw new Win32Exception(result);
+                }
             }
             finally
             {
@@ -194,7 +205,11 @@ namespace NetworkAdapterRouteControl.WinApi
                 rowPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NativeMethods.MIB_IPFORWARDROW)));
                 Marshal.StructureToPtr(route, rowPtr, false);
                 var result = NativeMethods.DeleteIpForwardEntry(rowPtr);
-                if (result != ApiError.ERROR_SUCCESS && result != ApiError.ERROR_NOT_FOUND) throw new Win32Exception(result);
+                if (result != ApiError.ERROR_SUCCESS &&
+                    result != ApiError.ERROR_NOT_FOUND)
+                {
+                    throw new Win32Exception(result);
+                }
             }
             finally
             {
