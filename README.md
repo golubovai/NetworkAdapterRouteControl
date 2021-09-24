@@ -1,3 +1,5 @@
+[![Github All Releases](https://img.shields.io/github/downloads/golubovai/NetworkAdapterRouteControl/total.svg)]()
+
 # NetworkAdapterRouteControl
 Controls and sync routing parameters of network adapter (VPN)
 
