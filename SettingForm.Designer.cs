@@ -34,8 +34,8 @@ namespace NetworkAdapterRouteControl
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingForm));
             this.routeDestinationListBox = new System.Windows.Forms.ListBox();
             this.routeDestinationGroupBox = new System.Windows.Forms.GroupBox();
-            this.routeDestinationTextBox = new System.Windows.Forms.TextBox();
             this.addRouteDestinationButton = new System.Windows.Forms.Button();
+            this.routeDestinationTextBox = new System.Windows.Forms.TextBox();
             this.adapterGroupBox = new System.Windows.Forms.GroupBox();
             this.adapterComboBox = new System.Windows.Forms.ComboBox();
             this.interfaceMetricNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -69,7 +69,7 @@ namespace NetworkAdapterRouteControl
             this.routeDestinationListBox.Size = new System.Drawing.Size(165, 108);
             this.routeDestinationListBox.TabIndex = 1;
             this.infoTooolTip.SetToolTip(this.routeDestinationListBox, "Список IP-адресов назначения \r\nмаршрутов адаптера");
-            this.routeDestinationListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.routeDestinationListBox_KeyDown);
+            this.routeDestinationListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RouteDestinationListBox_KeyDown);
             // 
             // routeDestinationGroupBox
             // 
@@ -83,17 +83,6 @@ namespace NetworkAdapterRouteControl
             this.routeDestinationGroupBox.TabIndex = 1;
             this.routeDestinationGroupBox.TabStop = false;
             this.routeDestinationGroupBox.Text = "Список IP-адресов назначения";
-            // 
-            // routeDestinationTextBox
-            // 
-            this.routeDestinationTextBox.Location = new System.Drawing.Point(8, 135);
-            this.routeDestinationTextBox.MaxLength = 15;
-            this.routeDestinationTextBox.Name = "routeDestinationTextBox";
-            this.routeDestinationTextBox.Size = new System.Drawing.Size(165, 20);
-            this.routeDestinationTextBox.TabIndex = 2;
-            this.infoTooolTip.SetToolTip(this.routeDestinationTextBox, "IP-адрес назначения в формате ___.___.___.___");
-            this.routeDestinationTextBox.TextChanged += new System.EventHandler(this.routeDestinationTextBox_TextChanged);
-            this.routeDestinationTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.routeDestinationTextBox_KeyDown);
             // 
             // addRouteDestinationButton
             // 
@@ -110,7 +99,19 @@ namespace NetworkAdapterRouteControl
             this.addRouteDestinationButton.Size = new System.Drawing.Size(20, 20);
             this.addRouteDestinationButton.TabIndex = 3;
             this.infoTooolTip.SetToolTip(this.addRouteDestinationButton, "Добавить IP-адрес назначения");
-            this.addRouteDestinationButton.Click += new System.EventHandler(this.addRouteDestinationButton_Click);
+            this.addRouteDestinationButton.UseVisualStyleBackColor = false;
+            this.addRouteDestinationButton.Click += new System.EventHandler(this.AddRouteDestinationButton_Click);
+            // 
+            // routeDestinationTextBox
+            // 
+            this.routeDestinationTextBox.Location = new System.Drawing.Point(8, 135);
+            this.routeDestinationTextBox.MaxLength = 15;
+            this.routeDestinationTextBox.Name = "routeDestinationTextBox";
+            this.routeDestinationTextBox.Size = new System.Drawing.Size(165, 20);
+            this.routeDestinationTextBox.TabIndex = 2;
+            this.infoTooolTip.SetToolTip(this.routeDestinationTextBox, "IP-адрес назначения в формате ___.___.___.___");
+            this.routeDestinationTextBox.TextChanged += new System.EventHandler(this.RouteDestinationTextBox_TextChanged);
+            this.routeDestinationTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RouteDestinationTextBox_KeyDown);
             // 
             // adapterGroupBox
             // 
@@ -267,7 +268,7 @@ namespace NetworkAdapterRouteControl
             this.exitButton.TabIndex = 10;
             this.exitButton.Text = "Отмена";
             this.exitButton.UseVisualStyleBackColor = true;
-            this.exitButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.exitButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // saveButton
             // 
@@ -278,7 +279,7 @@ namespace NetworkAdapterRouteControl
             this.saveButton.TabIndex = 9;
             this.saveButton.Text = "Сохранить";
             this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            this.saveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // autorunCheckBox
             // 

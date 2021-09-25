@@ -48,79 +48,87 @@ namespace NetworkAdapterRouteControl
 
         private void SettingForm_Load(object sender, EventArgs e)
         {
-            this.routeDestinationListBox.Items.AddRange(ReadSetting("RouteDestinationList").Split(',') as object[]);
-            if (this.routeDestinationListBox.Items.Count > 0) {
-                this.routeDestinationListBox.SelectedIndex = 0;
+            routeDestinationListBox.Items.AddRange(ReadSetting("RouteDestinationList").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries) as object[]);
+            if (routeDestinationListBox.Items.Count > 0) {
+                routeDestinationListBox.SelectedIndex = 0;
             }
             var adaptersInfo = IpHelper.GetAdaptersInfo();
+            adapterComboBox.DataSource = adaptersInfo;
+            adapterComboBox.SelectedIndex = adaptersInfo.FindIndex(i => (i.Description == ReadSetting("AdapterDescription")));
 
-            this.adapterComboBox.DataSource = adaptersInfo;
-            this.adapterComboBox.SelectedIndex =
-                adaptersInfo.FindIndex(i => i.Description == ReadSetting("AdapterDescription"));
-            this.routeMetricNumericUpDown.Value = decimal.Parse(ReadSetting("RouteMetric"), CultureInfo.InvariantCulture.NumberFormat);
-            this.interfaceMetricNumericUpDown.Value = decimal.Parse(ReadSetting("InterfaceMetric"), CultureInfo.InvariantCulture.NumberFormat);
-            this.syncPeriodNumericUpDown.Value = decimal.Parse(ReadSetting("SyncPeriod"), CultureInfo.InvariantCulture.NumberFormat);
-            this.autorunCheckBox.Checked = IsAutorun();
+            int value = int.MinValue;
+
+            if (!int.TryParse(ReadSetting("RouteMetric"), NumberStyles.Integer, CultureInfo.InvariantCulture, out value)) { value = 1000; };
+            routeMetricNumericUpDown.Value = Convert.ToDecimal(value);
+
+            if (!int.TryParse(ReadSetting("InterfaceMetric"), NumberStyles.Integer, CultureInfo.InvariantCulture, out value)) { value = 1000; };
+            interfaceMetricNumericUpDown.Value = Convert.ToDecimal(value);
+
+            if (!int.TryParse(ReadSetting("SyncPeriod"), NumberStyles.Integer, CultureInfo.InvariantCulture, out value)) { value = 100; };
+            syncPeriodNumericUpDown.Value = Convert.ToDecimal(value);
+
+            autorunCheckBox.Checked = IsAutorun();
             
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
+        private void SaveButton_Click(object sender, EventArgs e)
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
-            config.AppSettings.Settings["RouteDestinationList"].Value = String.Join(",", 
-                ((IEnumerable)this.routeDestinationListBox.Items).Cast<object>().Select(x => x.ToString()).ToArray());
+            config.AppSettings.Settings["RouteDestinationList"].Value = 
+                String.Join(",", ((IEnumerable)routeDestinationListBox.Items).Cast<object>().Select(x => x.ToString()).ToArray());
             config.AppSettings.Settings["AdapterDescription"].Value = (adapterComboBox.SelectedValue as AdapterInfo)?.Description;
-            config.AppSettings.Settings["RouteMetric"].Value = this.routeMetricNumericUpDown.Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
-            config.AppSettings.Settings["InterfaceMetric"].Value = this.interfaceMetricNumericUpDown.Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
-            config.AppSettings.Settings["SyncPeriod"].Value = this.syncPeriodNumericUpDown.Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
+            config.AppSettings.Settings["RouteMetric"].Value = routeMetricNumericUpDown.Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
+            config.AppSettings.Settings["InterfaceMetric"].Value = interfaceMetricNumericUpDown.Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
+            config.AppSettings.Settings["SyncPeriod"].Value = syncPeriodNumericUpDown.Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
-            (this.Owner as MainForm)?.SyncSettings();
+            (Owner as MainForm)?.SyncSettings();
             var isAutorun = IsAutorun();
-            if (this.autorunCheckBox.Checked && !isAutorun)
+            var autorunPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+            if (autorunCheckBox.Checked && !isAutorun)
             {
-                var rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                rk.SetValue(Application.ProductName, Application.ExecutablePath.ToString(), RegistryValueKind.String);
-            } else if (!this.autorunCheckBox.Checked && isAutorun) {
-                var rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                rk.DeleteValue(Application.ProductName, false);
+                var regKey = Registry.CurrentUser.OpenSubKey(autorunPath, true);
+                regKey.SetValue(Application.ProductName, "\"" + Application.ExecutablePath.ToString() + "\"", RegistryValueKind.String);
+            } else if (!autorunCheckBox.Checked && isAutorun) {
+                var regKey = Registry.CurrentUser.OpenSubKey(autorunPath, true);
+                regKey.DeleteValue(Application.ProductName, false);
             }
-            this.Close();
+            Close();
         }
 
-        private void addRouteDestinationButton_Click(object sender, EventArgs e)
+        private void AddRouteDestinationButton_Click(object sender, EventArgs e)
         {
-            if (!routDestinationRegex.IsMatch(routeDestinationTextBox.Text) || !IPAddress.TryParse(this.routeDestinationTextBox.Text, out var routeDestination))
+            if (!routDestinationRegex.IsMatch(routeDestinationTextBox.Text) || !IPAddress.TryParse(routeDestinationTextBox.Text, out var routeDestination))
             {
-                routeDestinationToolTip.Show("Неверный формат IP-адреса", this.routeDestinationTextBox, new Point(10, -25), 1000);
+                routeDestinationToolTip.Show("Неверный формат IP-адреса", routeDestinationTextBox, new Point(10, -25), 1000);
                 return;
             }
-            this.routeDestinationListBox.Items.Add(routeDestination.ToString());
-            this.routeDestinationTextBox.Text = "";
+            routeDestinationListBox.Items.Add(routeDestination.ToString());
+            routeDestinationTextBox.Text = "";
             
         }
 
-        private void routeDestinationListBox_KeyDown(object sender, KeyEventArgs e)
+        private void RouteDestinationListBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
-                if (this.routeDestinationListBox.SelectedIndex >= 0)
+                if (routeDestinationListBox.SelectedIndex >= 0)
                 {
-                    var index = this.routeDestinationListBox.SelectedIndex;
-                    this.routeDestinationListBox.Items.RemoveAt(index);
-                    if (this.routeDestinationListBox.Items.Count > index)
+                    var index = routeDestinationListBox.SelectedIndex;
+                    routeDestinationListBox.Items.RemoveAt(index);
+                    if (routeDestinationListBox.Items.Count > index)
                     {
-                        this.routeDestinationListBox.SelectedIndex = index;
+                        routeDestinationListBox.SelectedIndex = index;
                     }
-                    else if (this.routeDestinationListBox.Items.Count > 0)
+                    else if (routeDestinationListBox.Items.Count > 0)
                     {
-                        this.routeDestinationListBox.SelectedIndex = this.routeDestinationListBox.Items.Count - 1;
+                        routeDestinationListBox.SelectedIndex = routeDestinationListBox.Items.Count - 1;
                     }
                 }
             }
@@ -135,6 +143,10 @@ namespace NetworkAdapterRouteControl
             else if (e.Modifiers == Keys.Control && (e.KeyCode == Keys.C ||
                                                      e.KeyCode == Keys.V ||
                                                      e.KeyCode == Keys.X))
+            {
+                return true;
+            }
+            else if (e.Modifiers == Keys.Shift && (e.KeyCode == Keys.Insert))
             {
                 return true;
             }
@@ -173,25 +185,25 @@ namespace NetworkAdapterRouteControl
             return false;
         }
 
-        private void routeDestinationTextBox_KeyDown(object sender, KeyEventArgs e)
+        private void RouteDestinationTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (!IsNumericKey(e) && !IsEditKey(e) && !IsDotKey(e) && !IsForwardKey(e)) e.SuppressKeyPress = true;
             if (IsDotKey(e))
             {
-                this.routeDestinationTextBox.AppendText(".");
+                routeDestinationTextBox.AppendText(".");
                 e.SuppressKeyPress = true;
             }
-            preRouteDestinationValue = this.routeDestinationTextBox.Text;
+            preRouteDestinationValue = routeDestinationTextBox.Text;
         }
 
-        private void routeDestinationTextBox_TextChanged(object sender, EventArgs e)
+        private void RouteDestinationTextBox_TextChanged(object sender, EventArgs e)
         {
             if (ignoreRouteDestinationChange)
             {
                 ignoreRouteDestinationChange = false;
                 return;
             }
-            var value = this.routeDestinationTextBox.Text;
+            var value = routeDestinationTextBox.Text;
             if (value.Length == 0) return;
             if (value.Length < 15)
             {
@@ -200,12 +212,12 @@ namespace NetworkAdapterRouteControl
                 for (var i = dotCount; i < 3; i++) value += ".0";
             }
             if (routDestinationRegex.IsMatch(value)) return;
-            var selectionStart = this.routeDestinationTextBox.SelectionStart;
+            var selectionStart = routeDestinationTextBox.SelectionStart;
             ignoreRouteDestinationChange = true;
-            this.routeDestinationTextBox.Text = preRouteDestinationValue;
-            this.routeDestinationTextBox.SelectionStart = Math.Min(selectionStart, this.routeDestinationTextBox.Text.Length);
-            this.routeDestinationTextBox.SelectionLength = 0;
-            routeDestinationToolTip.Show("Неверный формат IP-адреса", this.routeDestinationTextBox, new Point(10, -25), 1000);
+            routeDestinationTextBox.Text = preRouteDestinationValue;
+            routeDestinationTextBox.SelectionStart = Math.Min(selectionStart, routeDestinationTextBox.Text.Length);
+            routeDestinationTextBox.SelectionLength = 0;
+            routeDestinationToolTip.Show("Неверный формат IP-адреса", routeDestinationTextBox, new Point(10, -25), 1000);
         }
 
     }

@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Net.Sockets;
-using System.Net;
-using System.Linq;
-using System.Configuration;
-using System.Threading;
-using System.Globalization;
-using System.Runtime.Caching;
-using NetworkAdapterRouteControl.WinApi;
+﻿using log4net;
 using Microsoft.Win32;
-using log4net;
+using NetworkAdapterRouteControl.WinApi;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Runtime.Caching;
+using System.Threading;
+using System.Windows.Forms;
 
 
 namespace NetworkAdapterRouteControl
@@ -18,7 +18,7 @@ namespace NetworkAdapterRouteControl
     public partial class MainForm : Form
     {
 
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly System.Threading.Timer _timer;
 
@@ -58,54 +58,61 @@ namespace NetworkAdapterRouteControl
                 }
 
                 // InterfaceMetric
-                if (!int.TryParse(ReadSetting("InterfaceMetric"), NumberStyles.Integer, CultureInfo.InvariantCulture,
-                    out _interfaceMetric))
+                var value = ReadSetting("InterfaceMetric");
+                if (string.IsNullOrEmpty(value)) 
+                {
+                    _interfaceMetric = 1000;
+                }
+                else if (!int.TryParse(ReadSetting("InterfaceMetric"), NumberStyles.Integer, CultureInfo.InvariantCulture, out _interfaceMetric))
                 {
                     throw new Exception("Метрика адаптера не задана или не является целым числом");
                 }
-
                 if (_interfaceMetric <= 0)
                 {
                     throw new Exception("Метрика адаптера должна быть больше нуля");
                 }
 
                 // RouteMetric
-                if (!int.TryParse(ReadSetting("RouteMetric"), NumberStyles.Integer, CultureInfo.InvariantCulture,
-                    out _routeMetric))
+                value = ReadSetting("RouteMetric");
+                if (string.IsNullOrEmpty(value))
+                {
+                    _routeMetric = 1000;
+                }
+                else if (!int.TryParse(ReadSetting("RouteMetric"), NumberStyles.Integer, CultureInfo.InvariantCulture, out _routeMetric))
                 {
                     throw new Exception("Метрика маршрута не задана или не является целым числом");
                 }
-
                 if (_routeMetric <= 0)
                 {
                     throw new Exception("Метрика маршрута должна быть больше нуля");
                 }
 
                 // RouteDestinationList
-                var routeDestinationValueList = ReadSetting("RouteDestinationList").Split(',');
-                if (routeDestinationValueList.Length == 0)
+                var routeDestinationValueList = ReadSetting("RouteDestinationList").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (routeDestinationValueList.Length > 0)
                 {
-                    throw new Exception("Список адресов назначения не задан");
-                }
-
-                _routeDestinationList = new IPAddress[routeDestinationValueList.Length];
-                for (int i = 0; i < routeDestinationValueList.Length; i++)
-                {
-                    if (!IPAddress.TryParse(routeDestinationValueList[i], out _routeDestinationList[i]))
+                    _routeDestinationList = new IPAddress[routeDestinationValueList.Length];
+                    for (int i = 0; i < routeDestinationValueList.Length; i++)
                     {
-                        throw new Exception(String.Format(
-                            "Список адресов назначения содержит адрес в неверном формате {0}",
-                            routeDestinationValueList[i]));
+                        if (!IPAddress.TryParse(routeDestinationValueList[i], out _routeDestinationList[i]))
+                        {
+                            throw new Exception(String.Format(
+                                "Список адресов назначения содержит адрес в неверном формате {0}",
+                                routeDestinationValueList[i]));
+                        }
                     }
                 }
 
                 // SyncPeriod
-                if (!int.TryParse(ReadSetting("SyncPeriod"), NumberStyles.Integer, CultureInfo.InvariantCulture,
-                    out _syncPeriod))
+                value = ReadSetting("SyncPeriod");
+                if (string.IsNullOrEmpty(value))
+                {
+                    _syncPeriod = 100;
+                }
+                else if (!int.TryParse(ReadSetting("SyncPeriod"), NumberStyles.Integer, CultureInfo.InvariantCulture, out _syncPeriod))
                 {
                     throw new Exception("Период синхронизации не задан или не является целым числом");
                 }
-
                 if (_syncPeriod <= 0)
                 {
                     throw new Exception("Период синхронизации должен быть больше нуля");
@@ -208,7 +215,7 @@ namespace NetworkAdapterRouteControl
             }
             catch (Exception e)
             {
-                log.Error(e.ToString());
+                _log.Error(e.ToString());
                 sender.PauseSync(1000, e);
             }
         }
@@ -223,20 +230,20 @@ namespace NetworkAdapterRouteControl
         protected override void OnVisibleChanged(EventArgs e)
         {
             base.OnVisibleChanged(e);
-            this.Visible = false;
+            Visible = false;
         }
 
         private void ShowNotify(string tipTitle, string tipText, int tipTimeout, ToolTipIcon tipIcon)
         {
             if (InvokeRequired)
             {
-                this.BeginInvoke((MethodInvoker)(() => this.notifyIcon.Visible = true));
-                this.BeginInvoke((MethodInvoker)(() => this.notifyIcon.ShowBalloonTip(tipTimeout, tipTitle, tipText, tipIcon)));
+                BeginInvoke((MethodInvoker)(() => notifyIcon.Visible = true));
+                BeginInvoke((MethodInvoker)(() => notifyIcon.ShowBalloonTip(tipTimeout, tipTitle, tipText, tipIcon)));
             }
             else
             {
                 notifyIcon.Visible = true;
-                this.notifyIcon.ShowBalloonTip(500, tipTitle, tipText, ToolTipIcon.Info);
+                notifyIcon.ShowBalloonTip(500, tipTitle, tipText, ToolTipIcon.Info);
             }
         }
 
@@ -246,23 +253,23 @@ namespace NetworkAdapterRouteControl
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
             ShowNotify("Остановлен", message, 500, ToolTipIcon.Info);
             if (InvokeRequired)
-                this.BeginInvoke((MethodInvoker)(() => this.controlToolStripMenuItem.Checked = false));
+                BeginInvoke((MethodInvoker)(() => controlToolStripMenuItem.Checked = false));
             else
-                this.controlToolStripMenuItem.Checked = false;
+                controlToolStripMenuItem.Checked = false;
         }
 
         private void StartSync()
         {
             if (!ReadSettings())
             {
-                this.controlToolStripMenuItem.Checked = false;
+                controlToolStripMenuItem.Checked = false;
                 return;
             }
             _timer.Change(0, _syncPeriod);
             SystemEvents.PowerModeChanged += OnPowerChange;
             notifyIcon.Visible = true;
             notifyIcon.ShowBalloonTip(500, "Запущен", " ", ToolTipIcon.Info);
-            this.controlToolStripMenuItem.Checked = true;
+            controlToolStripMenuItem.Checked = true;
         }
 
         private void OnPowerChange(object sender, PowerModeChangedEventArgs e)
@@ -270,11 +277,11 @@ namespace NetworkAdapterRouteControl
             switch (e.Mode)
             {
                 case PowerModes.Resume:
-                    log.Debug("Resume");
+                    _log.Debug("Resume");
                     _timer.Change(0, _syncPeriod);
                     break;
                 case PowerModes.Suspend:
-                    log.Debug("Suspend");
+                    _log.Debug("Suspend");
                     _timer.Change(Timeout.Infinite, Timeout.Infinite);
                     break;
             }
@@ -296,14 +303,14 @@ namespace NetworkAdapterRouteControl
 
         public void SyncSettings()
         {
-            if (this.controlToolStripMenuItem.Checked) _timer.Change(Timeout.Infinite, Timeout.Infinite);
+            if (controlToolStripMenuItem.Checked) _timer.Change(Timeout.Infinite, Timeout.Infinite);
             if (!ReadSettings()) return;
-            if (this.controlToolStripMenuItem.Checked) _timer.Change(0, _syncPeriod);
+            if (controlToolStripMenuItem.Checked) _timer.Change(0, _syncPeriod);
         }
 
-        private void controlToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ControlToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.controlToolStripMenuItem.Checked)
+            if (controlToolStripMenuItem.Checked)
             {
                 StopSync(" ");
             }
@@ -313,19 +320,19 @@ namespace NetworkAdapterRouteControl
             }
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.notifyIcon.Visible = false;
+            notifyIcon.Visible = false;
             Application.Exit();
         }
 
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = new SettingForm();
             form.ShowDialog(this);
         }
 
-        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+        private void NotifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
