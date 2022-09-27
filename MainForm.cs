@@ -173,12 +173,15 @@ namespace NetworkAdapterRouteControl
                     IPAddress.Parse("0.0.0.0")
                 };
 
-                foreach (var routeDestination in sender._routeDestinationList)
+                if (sender._routeDestinationList != null)
                 {
-                    destinationHashSet.Add(routeDestination);
+                    foreach (var routeDestination in sender._routeDestinationList)
+                    {
+                        destinationHashSet.Add(routeDestination);
+                    }
                 }
 
-                IpHelper.SetMetric(vpnAdapter.Index, sender._interfaceMetric);
+                IpHelper.SetMetric(vpnAdapter.Index, Convert.ToUInt32(sender._interfaceMetric));
                 var currentDestinationHashSet = new HashSet<IPAddress>();
                 foreach (var route in routeTable)
                 {
@@ -187,7 +190,7 @@ namespace NetworkAdapterRouteControl
                     {
                         if (route.Metric != sender._routeMetric + sender._interfaceMetric)
                         {
-                            route.Metric = sender._routeMetric + sender._interfaceMetric;
+                            route.Metric = Convert.ToUInt32(sender._routeMetric + sender._interfaceMetric);
                             IpHelper.SetRoute(route);
                         }
                         currentDestinationHashSet.Add(route.DestinationIP);
@@ -208,7 +211,7 @@ namespace NetworkAdapterRouteControl
                             SubnetMask = IPAddress.Parse("255.255.255.255"),
                             GatewayIP = vpnAdapter.PrimaryGateway,
                             InterfaceIndex = vpnAdapter.Index,
-                            Metric = sender._routeMetric
+                            Metric = Convert.ToUInt32(sender._routeMetric)
                         });
                     }
                 }

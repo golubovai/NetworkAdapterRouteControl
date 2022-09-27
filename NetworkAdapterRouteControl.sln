@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkAdapterRouteControl", "NetworkAdapterRouteControl.csproj", "{FC7A1B52-935F-46AA-B321-F9042B9A36BA}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "NetworkAdapterRouteControlSetup", "..\NetworkAdapterRouteControlSetup\NetworkAdapterRouteControlSetup.vdproj", "{019F0CAC-2CE8-498D-A401-F91AE73ED543}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "NetworkAdapterRouteControlSetup", "NetworkAdapterRouteControlSetup\NetworkAdapterRouteControlSetup.vdproj", "{5F890265-063E-43F4-AE03-B50B3AFCF7CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,8 +17,10 @@ Global
 		{FC7A1B52-935F-46AA-B321-F9042B9A36BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC7A1B52-935F-46AA-B321-F9042B9A36BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC7A1B52-935F-46AA-B321-F9042B9A36BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{019F0CAC-2CE8-498D-A401-F91AE73ED543}.Debug|Any CPU.ActiveCfg = Debug
-		{019F0CAC-2CE8-498D-A401-F91AE73ED543}.Release|Any CPU.ActiveCfg = Release
+		{5F890265-063E-43F4-AE03-B50B3AFCF7CE}.Debug|Any CPU.ActiveCfg = Debug
+		{5F890265-063E-43F4-AE03-B50B3AFCF7CE}.Debug|Any CPU.Build.0 = Debug
+		{5F890265-063E-43F4-AE03-B50B3AFCF7CE}.Release|Any CPU.ActiveCfg = Release
+		{5F890265-063E-43F4-AE03-B50B3AFCF7CE}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

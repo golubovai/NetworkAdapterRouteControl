@@ -40,7 +40,7 @@ namespace NetworkAdapterRouteControl.WinApi
                     if (info.DhcpEnabled > 0) IPAddress.TryParse(info.DhcpServer.IpAddress.Address, out dhcpServer);
                     var ip4adapterInfo = new AdapterInfo()
                     {
-                        Index = Convert.ToInt32(info.Index),
+                        Index = info.Index,
                         Description = info.AdapterDescription,
                         PrimaryGateway = primaryGateway,
                         DhcpServer = dhcpServer
@@ -91,11 +91,11 @@ namespace NetworkAdapterRouteControl.WinApi
                         DestinationIP = new IPAddress((long) row.dwForwardDest),
                         SubnetMask = new IPAddress((long) row.dwForwardMask),
                         GatewayIP = new IPAddress((long) row.dwForwardNextHop),
-                        InterfaceIndex = Convert.ToInt32(row.dwForwardIfIndex),
-                        ForwardType = Convert.ToInt32(row.dwForwardType),
-                        ForwardProtocol = Convert.ToInt32(row.dwForwardProto),
-                        ForwardAge = Convert.ToInt32(row.dwForwardAge),
-                        Metric = Convert.ToInt32(row.dwForwardMetric1)
+                        InterfaceIndex = row.dwForwardIfIndex,
+                        ForwardType = row.dwForwardType,
+                        ForwardProtocol = row.dwForwardProto,
+                        ForwardAge = row.dwForwardAge,
+                        Metric = row.dwForwardMetric1
                     };
                     routeTable.Add(entry);
                     rowPtr = new IntPtr(rowPtr.ToInt64() + Marshal.SizeOf(typeof(NativeMethods.MIB_IPFORWARDROW)));
@@ -217,7 +217,7 @@ namespace NetworkAdapterRouteControl.WinApi
             }
         }
 
-        public static void SetMetric(int interfaceUIndex, int metric)
+        public static void SetMetric(uint interfaceUIndex, uint metric)
         {
             var rowPtr = IntPtr.Zero;
             try
@@ -225,7 +225,7 @@ namespace NetworkAdapterRouteControl.WinApi
                 var row = new NativeMethods.MIB_IPINTERFACE_ROW
                 {
                     Family = 2,
-                    InterfaceIndex = Convert.ToUInt32(interfaceUIndex)
+                    InterfaceIndex = interfaceUIndex
                 };
                 rowPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NativeMethods.MIB_IPINTERFACE_ROW)));
                 Marshal.StructureToPtr(row, rowPtr, false);
@@ -234,9 +234,9 @@ namespace NetworkAdapterRouteControl.WinApi
                 if (result != ApiError.ERROR_SUCCESS) throw new Win32Exception(result);
                 row = (NativeMethods.MIB_IPINTERFACE_ROW)Marshal.PtrToStructure(rowPtr, typeof(NativeMethods.MIB_IPINTERFACE_ROW));
 
-                if (row.Metric != (uint)metric)
+                if (row.Metric != metric)
                 {
-                    row.Metric = Convert.ToUInt32(metric);
+                    row.Metric = metric;
                     row.SitePrefixLength = 0;
                     Marshal.StructureToPtr(row, rowPtr, false);
                     result = NativeMethods.SetIpInterfaceEntry(rowPtr);
@@ -252,7 +252,7 @@ namespace NetworkAdapterRouteControl.WinApi
 
     public class AdapterInfo
     {
-        public int Index { get; set; }
+        public uint Index { get; set; }
         public string Description { get; set; }
         public IPAddress PrimaryGateway { get; set; }
         public IPAddress DhcpServer { get; set; }
@@ -267,11 +267,11 @@ namespace NetworkAdapterRouteControl.WinApi
         public IPAddress DestinationIP { get; set; }
         public IPAddress SubnetMask { get; set; }
         public IPAddress GatewayIP { get; set; }
-        public int InterfaceIndex { get; set; }
-        public int ForwardType { get; set; }
-        public int ForwardProtocol { get; set; }
-        public int ForwardAge { get; set; }
-        public int Metric { get; set; }
+        public uint InterfaceIndex { get; set; }
+        public uint ForwardType { get; set; }
+        public uint ForwardProtocol { get; set; }
+        public uint ForwardAge { get; set; }
+        public uint Metric { get; set; }
 
         public override string ToString()
         {
