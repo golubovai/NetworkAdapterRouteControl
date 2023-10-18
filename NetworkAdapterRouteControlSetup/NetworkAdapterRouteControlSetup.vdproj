@@ -15,18 +15,6 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_290FA423C19897A936AB80A905E32CE3"
-        "OwnerKey" = "8:_BEA1A36312024A94A7CB3BB88E486EAF"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5D9E85099CB78408B7886FCDB1DE5EA4"
-        "OwnerKey" = "8:_BEA1A36312024A94A7CB3BB88E486EAF"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_801CB4FBC047FB481A81FD16889B292A"
         "OwnerKey" = "8:_BEA1A36312024A94A7CB3BB88E486EAF"
         "MsmSig" = "8:_UNDEFINED"
@@ -34,7 +22,13 @@
         "Entry"
         {
         "MsmKey" = "8:_801CB4FBC047FB481A81FD16889B292A"
-        "OwnerKey" = "8:_5D9E85099CB78408B7886FCDB1DE5EA4"
+        "OwnerKey" = "8:_C29BEE43135088E20EA486EA71EE98F1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_984FF5AC14689043262B61EA66C05ED3"
+        "OwnerKey" = "8:_BEA1A36312024A94A7CB3BB88E486EAF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -52,7 +46,7 @@
         "Entry"
         {
         "MsmKey" = "8:_A8CFA1F024D0662BE90319A84C6A7C5E"
-        "OwnerKey" = "8:_5D9E85099CB78408B7886FCDB1DE5EA4"
+        "OwnerKey" = "8:_C29BEE43135088E20EA486EA71EE98F1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -69,6 +63,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_C29BEE43135088E20EA486EA71EE98F1"
+        "OwnerKey" = "8:_BEA1A36312024A94A7CB3BB88E486EAF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_BEA1A36312024A94A7CB3BB88E486EAF"
         "MsmSig" = "8:_UNDEFINED"
@@ -76,13 +76,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5D9E85099CB78408B7886FCDB1DE5EA4"
+        "OwnerKey" = "8:_C29BEE43135088E20EA486EA71EE98F1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_290FA423C19897A936AB80A905E32CE3"
+        "OwnerKey" = "8:_984FF5AC14689043262B61EA66C05ED3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -141,7 +141,7 @@
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
-        "Compression" = "3:2"
+        "Compression" = "3:3"
         "SignOutput" = "11:FALSE"
         "CertificateFile" = "8:"
         "PrivateKeyFile" = "8:"
@@ -192,68 +192,6 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_290FA423C19897A936AB80A905E32CE3"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_290FA423C19897A936AB80A905E32CE3"
-                    {
-                    "Name" = "8:log4net.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:log4net.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_372284C886A340A1BF94A45EC17FA9F9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5D9E85099CB78408B7886FCDB1DE5EA4"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.Win32.TaskScheduler, Version=2.9.1.0, Culture=neutral, PublicKeyToken=e25603a88b3aa7da, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_5D9E85099CB78408B7886FCDB1DE5EA4"
-                    {
-                    "Name" = "8:Microsoft.Win32.TaskScheduler.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Microsoft.Win32.TaskScheduler.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_372284C886A340A1BF94A45EC17FA9F9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_801CB4FBC047FB481A81FD16889B292A"
             {
             "AssemblyRegister" = "3:1"
@@ -268,6 +206,37 @@
                     }
                 }
             "SourcePath" = "8:System.IO.Compression.FileSystem.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_372284C886A340A1BF94A45EC17FA9F9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_984FF5AC14689043262B61EA66C05ED3"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_984FF5AC14689043262B61EA66C05ED3"
+                    {
+                    "Name" = "8:log4net.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:log4net.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_372284C886A340A1BF94A45EC17FA9F9"
@@ -319,6 +288,37 @@
                     }
                 }
             "SourcePath" = "8:System.IO.Compression.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_372284C886A340A1BF94A45EC17FA9F9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C29BEE43135088E20EA486EA71EE98F1"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Win32.TaskScheduler, Version=2.9.1.0, Culture=neutral, PublicKeyToken=e25603a88b3aa7da, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_C29BEE43135088E20EA486EA71EE98F1"
+                    {
+                    "Name" = "8:Microsoft.Win32.TaskScheduler.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.Win32.TaskScheduler.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_372284C886A340A1BF94A45EC17FA9F9"
@@ -403,15 +403,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Контроль параметров маршрутизации"
-        "ProductCode" = "8:{166A0544-5219-4F7C-91BD-C222C7824E5A}"
-        "PackageCode" = "8:{777C2E94-1CE4-498D-84ED-A4417C1C4DA2}"
+        "ProductCode" = "8:{9A694A6E-A7A7-45C3-9988-21D5F0E4B2C5}"
+        "PackageCode" = "8:{2D55070D-18C2-4B89-B1B1-1E61EDC87A46}"
         "UpgradeCode" = "8:{4DB7EE02-4CEB-45E1-A5A5-E42CC7085D3B}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
-        "DetectNewerInstalledVersion" = "11:TRUE"
+        "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.5.0"
+        "ProductVersion" = "8:1.5.6"
         "Manufacturer" = "8:AIG Software"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
