@@ -85,6 +85,7 @@ namespace NetworkAdapterRouteControl
                             taskDef.Principal.LogonType = TaskLogonType.InteractiveToken;
                             taskDef.Principal.RunLevel = TaskRunLevel.Highest;
                             taskDef.Settings.AllowDemandStart = true;
+                            taskDef.Settings.ExecutionTimeLimit = TimeSpan.Zero;
                             taskDef.Settings.MultipleInstances = TaskInstancesPolicy.Parallel;
                             taskDef.RegistrationInfo.Author = Application.CompanyName;
                             taskDef.Actions.Add(new ExecAction(applicationPath));
